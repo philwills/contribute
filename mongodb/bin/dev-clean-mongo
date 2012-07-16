@@ -1,0 +1,13 @@
+#!/bin/bash
+
+mongodir=~/mongo/contribute
+
+echo "deleting data"
+rm -r $mongodir/db/node1
+rm -r $mongodir/db/node2
+rm -r $mongodir/db/node3
+
+echo "deleting logs"
+rm -r $mongodir/logs
+
+echo "done"
