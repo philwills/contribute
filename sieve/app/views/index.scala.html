@@ -1,0 +1,11 @@
+@(submissions: Seq[Submission])(implicit user: Option[Identity])
+
+@main("title") {
+    
+    <ul>
+        @submissions.map { sub =>
+            <li>@sub.text -  @sub.status</li>
+        }
+    </ul>
+    
+}
