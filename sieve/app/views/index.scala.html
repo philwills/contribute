@@ -1,7 +1,11 @@
-@(message: String)(implicit user: Option[Identity])
+@(submissions: Seq[Submission])(implicit user: Option[Identity])
 
 @main("title") {
     
-    @welcome(message)
+    <ul>
+        @submissions.map { sub =>
+            <li>@sub.text -  @sub.status</li>
+        }
+    </ul>
     
 }
