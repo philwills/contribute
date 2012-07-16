@@ -1,0 +1,88 @@
+<!DOCTYPE web-app PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+    <display-name>Flexible Content API</display-name>
+
+    <servlet>
+        <servlet-name>ApiDispatcher</servlet-name>
+        <servlet-class>com.gu.contribute.api.dispatcher.ApiDispatcher</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>DocsDispatcher</servlet-name>
+        <servlet-class>com.gu.contribute.api.dispatcher.DocumentationDispatcher</servlet-class>
+    </servlet>
+
+    <filter>
+        <filter-name>request-logging</filter-name>
+        <filter-class>com.gu.management.servlet.RequestLoggingFilter</filter-class>
+    </filter>
+
+    <filter>
+        <filter-name>managementFilter</filter-name>
+        <filter-class>com.gu.contribute.api.management.ApiManagementFilter</filter-class>
+    </filter>
+
+    <filter>
+        <filter-name>server-errors</filter-name>
+        <filter-class>com.gu.management.servlet.ServerErrorResponseCaptureFilter</filter-class>
+    </filter>
+
+    <filter>
+        <filter-name>client-errors</filter-name>
+        <filter-class>com.gu.management.servlet.ClientErrorResponseCaptureFilter</filter-class>
+    </filter>
+
+    <filter>
+        <filter-name>exception-filter</filter-name>
+        <filter-class>com.gu.management.servlet.ExceptionCaptureFilter</filter-class>
+    </filter>
+
+    <filter>
+        <filter-name>uniqueid-filter</filter-name>
+        <filter-class>com.gu.management.servlet.UniqueIdFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>uniqueid-filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>server-errors</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>client-errors</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>exception-filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>request-logging</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ApiDispatcher</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>DocsDispatcher</servlet-name>
+        <url-pattern>/docs/*</url-pattern>
+    </servlet-mapping>
+
+    <filter-mapping>
+        <filter-name>managementFilter</filter-name>
+        <url-pattern>/management/*</url-pattern>
+    </filter-mapping>
+
+</web-app>

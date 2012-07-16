@@ -1,0 +1,29 @@
+body {
+    padding-top: 60px;
+}
+
+.topbar {
+    position: absolute;
+}
+
+.topbar #logo {
+    float:left;
+    padding-left:124px;
+    display:block;
+    height:40px;
+    background:url('images/guardian-logo.png') no-repeat left 11px;
+    color:#FFF;
+    text-transform:lowercase;
+    font-size:150%;
+    font-weight:200;
+    line-height:38px;
+}
+
+.topbar .brand {
+    letter-spacing: 1px;
+    padding-right: 38px;
+}
+
+.topbar .brand:hover {
+    text-decoration: none;
+}

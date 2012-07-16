@@ -23,3 +23,5 @@ libraryDependencies ++= Seq(
   "com.gu" % "configuration" % "2.9",
   "org.scalatest" %% "scalatest" % "1.6.1" % "test"
 )
+
+publishArtifact := false

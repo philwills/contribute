@@ -1,0 +1,23 @@
+<%@ val endpoint: com.gu.contribute.Endpoint %>
+<%@ val appContext: String %>
+
+<div class="page-header">
+    <h1>${endpoint.method} ${appContext}${endpoint.path}</h1>
+</div>
+
+<div class="row">
+<p>${endpoint.description}</p>
+<h2>Resource URI</h2>
+${appContext}${endpoint.path}
+
+<h2>Parameters</h2>
+
+<ul>
+#for(r <- endpoint.requiredParams)
+    <li>${r.name} - required - ${r.description}</li>
+#end
+#for(o <- endpoint.optionalParams)
+    <li>${o.name} - optional - ${o.description}</li>
+#end
+</ul>
+</div>

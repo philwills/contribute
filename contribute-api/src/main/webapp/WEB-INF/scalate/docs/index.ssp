@@ -1,0 +1,7 @@
+<%@ val endpoints: List[com.gu.contribute.Endpoint] %>
+
+<ul>
+#for (e <- endpoints)
+    <li><a href="docs/${e.slug}">${e.slug}</a></li>
+#end
+</ul>
