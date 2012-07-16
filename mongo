@@ -1,0 +1,1 @@
+~/mongo/contribute/mongodb-linux-x86_64-2.0.0/bin/mongo contribute -port 27018 -u contribute -p contribute
