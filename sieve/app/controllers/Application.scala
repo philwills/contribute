@@ -16,19 +16,23 @@ object Application extends Controller {
   
   def index = AuthAction { r =>
     implicit val id = r.identity
-    Ok(views.html.index(List(
-      Submission("Someone at my hamster", New),
-      Submission("No-one ate my hamster", ReviewedNoAction(phil)),
-      Submission("The Queen ate my hamster", FollowingUp(phil))
-    )))
+    Ok(views.html.index(Scaffolding.submissions))
   }
-
-  lazy val phil = Identity("", "phil.wills@guardian.co.uk", "Phil", "Wills")
 }
 
 case class Submission(text: String, status: SubmissionStatus)
 
-sealed trait SubmissionStatus
-case object New extends SubmissionStatus
-case class ReviewedNoAction(by: Identity) extends SubmissionStatus
-case class FollowingUp(by: Identity) extends SubmissionStatus
+case class SubmissionStatus(value: String, by: Option[Identity])
+object New  { def apply() = SubmissionStatus("new", None) }
+object ReviewedNoAction { def apply(by: Identity) = SubmissionStatus("no-action", Some(by)) }
+object FollowingUp { def apply(by: Identity) = SubmissionStatus("following-up", Some(by)) }
+
+object Scaffolding {
+  def submissions = List(
+    Submission("Someone at my hamster", New()),
+    Submission("No-one ate my hamster", ReviewedNoAction(phil)),
+    Submission("The Queen ate my hamster", FollowingUp(phil))
+  )
+
+  lazy val phil = Identity("", "phil.wills@guardian.co.uk", "Phil", "Wills")
+}
