@@ -1,11 +1,88 @@
 @(submissions: Seq[Submission])(implicit user: Option[Identity])
 
 @main("title") {
-    
-    <ul>
-        @submissions.map { sub =>
-            <li>@sub.text -  @sub.status</li>
+    <style>
+        span.editor:before {
+            content: "("
         }
-    </ul>
+        span.editor:after {
+            content: ")"
+        }
+        li.no-action {
+            opacity: 0.3;
+        }
+
+    </style>
     
+    <ul data-bind="foreach: submissions">
+        <!--li data-bind="attr: { class: status }"-->
+        <li data-bind="css: { 'no-action': noAction }" class="fluid-row">
+            <span data-bind="text: text" class="col-6"></span>
+            <div class="status" class="col-6">
+                <div><input type="radio" value="new" data-bind="checked: status, attr: { name: $index}" />New</div>
+                <div>
+                    <input type="radio" value="no-action" data-bind="checked: status, attr: { name: $index}" />
+                    Reviewed - no action <span class="editor" data-bind="text: editor, visible: noAction"></span>
+                </div>
+                <div>
+                    <input type="radio" value="following-up" data-bind="checked: status, attr: { name: $index}" />
+                    Following up <span class="editor" data-bind="text: editor, visible: followUp"></span>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <script>
+    @user.map { u =>
+        var activeUser = {
+            openid: "@u.openid",
+            firstName: "@u.firstName",
+            lastName: "@u.lastName"
+        }
+    }
+
+        function Submission(data) {
+            var self = this;
+
+            function fullName(){
+                var fullName = "";
+                if (self.by()) {
+                    fullName = self.by().firstName + " " + self.by().lastName;
+                }
+                return fullName;
+            }
+
+            self.text = ko.observable(data.text);
+            self.status = ko.observable(data.status.value);
+            self.by = ko.observable(data.status.by)
+            self.editor = ko.computed(fullName);
+            self.noAction = ko.computed(function() {
+                return this.status() === "no-action"
+            }, self);
+            self.followUp = ko.computed(function() {
+                return this.status() === "following-up";
+            }, self);
+
+            self.status.subscribe(function(newStatus) {
+                if (self.status() === "new") {
+                    self.by(null)
+                } else {
+                    self.by(activeUser)
+                }
+            });
+        }
+
+        function SubmissionsViewModel() {
+            var self = this;
+
+            self.submissions = ko.observableArray([]);
+
+            $.getJSON("/submissions", function(allData) {
+                var serverSubmissions = $.map(allData, function(item) { return new Submission(item) });
+                self.submissions(serverSubmissions);
+            });
+        }
+
+        ko.applyBindings(new SubmissionsViewModel());
+    </script>
 }
