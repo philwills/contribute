@@ -13,7 +13,7 @@ object ContributeBuild extends Build {
 
   lazy val root = Project("root", file(".")).aggregate(contributeApi)
 
-  lazy val web = Project("web", file(".")).settings(rootSettings: _*).settings(port in container.Configuration := 9081)
+  lazy val web = Project("web", file(".")).settings(rootSettings: _*).settings(port in container.Configuration := 7588)
 
   lazy val rootSettings = Seq(
     libraryDependencies += "org.eclipse.jetty" % "jetty-webapp" % "7.4.5.v20110725" % "container",
@@ -21,7 +21,7 @@ object ContributeBuild extends Build {
     scalaVersion <<= (crossScalaVersions) { versions => versions.head },
     scalacOptions ++= Seq("-unchecked", "-deprecation"),
     organization := "com.gu"
-  ) ++ container.deploy("/api" -> contributeApi) ++ dist ++ (port in container.Configuration := 9081)
+  ) ++ container.deploy("/api" -> contributeApi) ++ dist ++ (port in container.Configuration := 7588)
 
   lazy val project = Project("project", file("project"))
 

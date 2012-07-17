@@ -29,8 +29,10 @@ object MongoDataSource extends MongoManagement with Loggable {
     throw new Exception("Authentication failed")
   }
 
-  lazy val usersCollection = createCollection("users")
-  lazy val messagesCollection = createCollection("messages")
+  lazy val contributorsCollection = createCollection("contributors")
+  lazy val journalistsCollection = createCollection("journalists")
+  lazy val requestsCollections = createCollection("requests")
+  lazy val responsesCollection = createCollection("responses")
 
   private def createCollection(name: String) = {
     val collection = db(name)
