@@ -11,8 +11,15 @@ class ApiDispatcher extends JsonDispatcher with Loggable {
   lazy val missingId = "An ID was not provided"
   lazy val userNotFound = "User was not found"
   lazy val requestNotFound = "Request was not found"
+  lazy val responseNotFound = "Response was not found"
 
   implicit def endpoint2RouteMatcher(endpoint: Endpoint): RouteMatcher = new SinatraRouteMatcher(endpoint.path, requestPath)
+
+  get(GetJournalist) {
+    val userId = multiParams("splat").headOption getOrElse halt(status = 400, reason = missingId)
+    val user = Journalist(userId) getOrElse halt(status = 404, reason = userNotFound)
+    JournalistResponse(ok, user)
+  }
 
   get(GetContributor) {
     val userId = multiParams("splat").headOption getOrElse halt(status = 400, reason = missingId)
@@ -30,6 +37,12 @@ class ApiDispatcher extends JsonDispatcher with Loggable {
     val requestId = multiParams("splat").headOption getOrElse halt(status = 400, reason = missingId)
     val request = Request(requestId) getOrElse halt(status = 404, reason = requestNotFound)
     RequestResponse(ok, request)
+  }
+
+  get(GetResponse) {
+    val responseId = multiParams("splat").headOption getOrElse halt(status = 400, reason = missingId)
+    val response = Response(responseId) getOrElse halt(status = 404, reason = responseNotFound)
+    ResponseResponse(ok, response)
   }
 
 }
