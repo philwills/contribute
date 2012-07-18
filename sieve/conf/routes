@@ -9,6 +9,7 @@ GET     /responses                  controllers.Application.responses
 GET     /submissions                controllers.Api.submissions
 POST    /submission                 controllers.Api.updateSubmission
 
+GET     /api/users                  controllers.Api.users
 
 GET     /login                      controllers.Login.login
 POST    /login                      controllers.Login.loginPost
