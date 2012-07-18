@@ -19,4 +19,9 @@ object Api {
       js.toString()
     }.getOrElse{Logger.error(req.body.toString());req.body.toString()})
   }
+
+  def users = Action {
+    Ok(Serialization.write(Mongo.users.toList))
+  }
 }
+
