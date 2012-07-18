@@ -1,4 +1,6 @@
-package com.gu.contribute.api.model
+package com.gu.contribute.api
+
+import model._
 
 case class JournalistResponse(status: String, content: Journalist)
 
