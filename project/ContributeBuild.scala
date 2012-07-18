@@ -3,7 +3,7 @@ import Keys._
 //import com.github.siasia._
 //import PluginKeys._
 //import WebPlugin._
-import com.gu.SbtDistPlugin._
+//import com.gu.SbtDistPlugin._
 
 object ContributeBuild extends Build {
 
@@ -22,7 +22,8 @@ object ContributeBuild extends Build {
     scalaVersion <<= (crossScalaVersions) { versions => versions.head },
     scalacOptions ++= Seq("-unchecked", "-deprecation"),
     organization := "com.gu"
-  ) ++ dist
+  ) 
+//++ dist
 //  ++ container.deploy("/api" -> contributeApi)
 
 //     ++ (port in container.Configuration := 7588)
@@ -40,9 +41,9 @@ object ContributeBuild extends Build {
     (deployRoot ***) x rebase (deployRoot, "")
   }
 
-  lazy val dist: Seq[Setting[_]] = distSettings ++ Seq(
-    distFiles <+= webappProject(contributeApi, "packages/contribute-api/webapps/api.war"),
-    distFiles <++= deployFiles
-  )
+// lazy val dist: Seq[Setting[_]] = distSettings ++ Seq(
+//   distFiles <+= webappProject(contributeApi, "packages/contribute-api/webapps/api.war"),
+//   distFiles <++= deployFiles
+// )
 
 }

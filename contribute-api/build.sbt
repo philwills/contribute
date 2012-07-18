@@ -1,4 +1,3 @@
-import com.gu._
 
 resolvers ++= Seq(
   "Local github" at "file://" + Path.userHome + "/guardian.github.com/maven/repo-snapshots",
@@ -10,7 +9,7 @@ resolvers ++= Seq(
 
 libraryDependencies ++= Seq(
   "javax.servlet" % "servlet-api" % "2.5" % "provided",
-  "org.eclipse.jetty" % "jetty-webapp" % "7.4.5.v20110725" % "container",
+  "org.eclipse.jetty" % "jetty-webapp" % "7.4.5.v20110725",
   "org.scalatra" %% "scalatra" % "2.0.2",
   "org.fusesource.scalate" % "scalate-core" % "1.5.3",
   "org.scalatra" %% "scalatra-scalate" % "2.0.2",
