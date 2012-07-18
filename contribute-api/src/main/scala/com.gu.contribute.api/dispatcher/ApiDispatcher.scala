@@ -29,6 +29,15 @@ class ApiDispatcher extends JsonDispatcher with Loggable {
     JournalistResponse(ok, user)
   }
 
+//  get(AddJournalist) {
+//    val id = params.get("id") getOrElse halt(status = 400, reason = missingId) //todo integrate with identity
+//    val user = Journalist(id)
+//    user.upsert match {
+//      case Some(r) => status(204)
+//      case None => halt(status = 500)
+//    }
+//  }
+
   get(GetContributor) {
     val userId = params.get("userId") getOrElse halt(status = 400, reason = missingId)
     if(!ObjectId.isValid(userId)) halt(status = 400, reason = invalidId)

@@ -20,7 +20,7 @@ case class Request(@Key("_id") id: ObjectId = new ObjectId,
     startDate: DateTime = new DateTime,
     endDate: Option[DateTime],
     journalist: ObjectId,
-    contributors: List[ObjectId] = List()) extends Loggable {
+    contributors: List[ObjectId] = List()) extends Loggable { //todo only include contributors in json for journalists
 
   def upsert = Request.upsert(this)
 

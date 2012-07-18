@@ -5,6 +5,11 @@ abstract class Param {
   val description: String
 }
 
+object IdentityIdParam extends Param {
+  lazy val name = "id"
+  lazy val description = "An identity ID."
+}
+
 object RequestTitleParam extends Param {
   lazy val name = "title"
   lazy val description = "The title of the contribution request."
