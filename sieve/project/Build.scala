@@ -9,7 +9,8 @@ object ApplicationBuild extends Build {
 
     val appDependencies = Seq(
       "net.liftweb" %% "lift-json" % "2.4",
-      "net.liftweb" %% "lift-json-ext" % "2.4"
+      "net.liftweb" %% "lift-json-ext" % "2.4",
+      "org.mongodb" %% "casbah" % "2.4.1"
     )
 
     val main = PlayProject(appName, appVersion, appDependencies, mainLang = SCALA).settings(
