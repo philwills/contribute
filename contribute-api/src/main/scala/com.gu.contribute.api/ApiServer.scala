@@ -8,13 +8,12 @@ import java.io.File
 object ApiServer extends App {
   val server = new Server(8080)
 
-  val context = new WebAppContext()
-  context.setContextPath("/")
-  context.setResourceBase("./src/main/webapp")
-  context.setParentLoaderPriority(true)
-
+  val context = new ServletContextHandler(ServletContextHandler.SESSIONS)
   server.setHandler(context)
-
+  val web = new WebAppContext(rootPath, "/")
+  server.setHandler(web)
   server.start()
   server.join()
+
+  def rootPath = getClass.getClassLoader.getResource("webapp").toExternalForm
 }
