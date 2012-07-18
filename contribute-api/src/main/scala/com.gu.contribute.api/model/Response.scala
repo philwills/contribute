@@ -19,7 +19,11 @@ case class Response(@Key("_id") id: ObjectId = new ObjectId,
     text: String = "",
     imageUri: Option[String],
     date: DateTime = new DateTime,
-    endorsed: Boolean = false) extends Loggable
+    endorsed: Boolean = false) extends Loggable {
+
+  def upsert = Response.upsert(this)
+
+}
 
 object Response extends Loggable {
 
@@ -27,6 +31,18 @@ object Response extends Loggable {
 
   def apply(id: String): Option[Response] = {
     Dao.findOne(MongoDBObject("_id" -> new ObjectId(id)))
+  }
+
+  def apply(contributorId: String, requestId: String, text: String, imageUri: Option[String]): Response = {
+    Response(contributor = new ObjectId(contributorId), request = new ObjectId(requestId), text = text, imageUri = imageUri)
+  }
+
+  def getForRequest(requestId: String): List[Response] = {
+    Dao.find(MongoDBObject("request" -> new ObjectId(requestId))).toList
+  }
+
+  def upsert(response: Response): Option[Response] = {
+    Dao.collection.findAndModify(Map("_id" -> response.id), DBObject(), DBObject(), false, response, true, true) map(grater[Response].asObject(_))
   }
 
 }

@@ -55,6 +55,24 @@ object GetRequest extends Endpoint {
   lazy val method = HttpGetMethod
 }
 
+object GetRequestResponses extends Endpoint {
+  lazy val slug = "getRequestResponses"
+  lazy val path = "/request/*/responses"
+  lazy val stringFormat = "/request/%s/responses"
+  lazy val description = "Get the responses to a request"
+  lazy override val requiredParams = List(RequestIdParam)
+  lazy val method = HttpGetMethod
+}
+
+object Respond extends Endpoint {
+  lazy val slug = "respond"
+  lazy val path = "/request/*/respond"
+  lazy val stringFormat = "/request/%s/respond"
+  lazy val description = "Respond to a request"
+  lazy override val requiredParams = List(RequestIdParam)
+  lazy val method = HttpPostMethod
+}
+
 object GetResponse extends Endpoint {
   lazy val slug = "getResponse"
   lazy val path = "/response/*"
