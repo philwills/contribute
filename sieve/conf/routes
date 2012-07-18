@@ -6,6 +6,7 @@
 GET     /                           controllers.Application.index
 
 GET     /submissions                controllers.Api.submissions
+POST    /submission                 controllers.Api.updateSubmission
 
 
 GET     /login                      controllers.Login.login

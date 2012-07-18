@@ -20,7 +20,7 @@ object Application extends Controller {
   }
 }
 
-case class Submission(text: String, status: SubmissionStatus)
+case class Submission(id: String, text: String, status: SubmissionStatus)
 
 case class SubmissionStatus(value: String, by: Option[Identity])
 object New  { def apply() = SubmissionStatus("new", None) }
@@ -29,9 +29,9 @@ object FollowingUp { def apply(by: Identity) = SubmissionStatus("following-up", 
 
 object Scaffolding {
   def submissions = List(
-    Submission("Someone at my hamster", New()),
-    Submission("No-one ate my hamster", ReviewedNoAction(phil)),
-    Submission("The Queen ate my hamster", FollowingUp(phil))
+    Submission("1", "Someone at my hamster", New()),
+    Submission("2", "No-one ate my hamster", ReviewedNoAction(phil)),
+    Submission("3", "The Queen ate my hamster", FollowingUp(phil))
   )
 
   lazy val phil = Identity("", "phil.wills@guardian.co.uk", "Phil", "Wills")

@@ -18,15 +18,15 @@
         <!--li data-bind="attr: { class: status }"-->
         <li data-bind="css: { 'no-action': noAction }" class="fluid-row">
             <span data-bind="text: text" class="col-6"></span>
-            <div class="status" class="col-6">
-                <div><input type="radio" value="new" data-bind="checked: status, attr: { name: $index}" />New</div>
+            <div class="status col-6">
+                <div><input type="radio" value="new" data-bind="checked: status.value, attr: { name: $index}" />New</div>
                 <div>
-                    <input type="radio" value="no-action" data-bind="checked: status, attr: { name: $index}" />
-                    Reviewed - no action <span class="editor" data-bind="text: editor, visible: noAction"></span>
+                    <input type="radio" value="no-action" data-bind="checked: status.value, attr: { name: $index}" />
+                    Reviewed - no action <span class="editor" data-bind="text: status.by().fullName, visible: noAction"></span>
                 </div>
                 <div>
-                    <input type="radio" value="following-up" data-bind="checked: status, attr: { name: $index}" />
-                    Following up <span class="editor" data-bind="text: editor, visible: followUp"></span>
+                    <input type="radio" value="following-up" data-bind="checked: status.value, attr: { name: $index}" />
+                    Following up <span class="editor" data-bind="text: status.by().fullName, visible: followUp"></span>
                 </div>
             </div>
         </li>
@@ -44,31 +44,48 @@
         function Submission(data) {
             var self = this;
 
-            function fullName(){
-                var fullName = "";
-                if (self.by()) {
-                    fullName = self.by().firstName + " " + self.by().lastName;
-                }
-                return fullName;
+            function Editor(stuff) {
+                var self = this
+
+                self.openid = ko.observable(stuff.openid)
+                self.firstName = ko.observable(stuff.firstName)
+                self.lastName = ko.observable(stuff.lastName)
+                self.fullName = ko.dependentObservable(function (){
+                   return self.firstName() + " " + self.lastName()
+                });
             }
 
+            function Status(status) {
+                this.value = ko.observable(status.value)
+                if (status.by) {
+                    this.by = ko.observable(new Editor(status.by))
+                } else {
+                    this.by = ko.observable(new Editor({}))
+                }
+            }
+
+            self.id = data.id
             self.text = ko.observable(data.text);
-            self.status = ko.observable(data.status.value);
-            self.by = ko.observable(data.status.by)
-            self.editor = ko.computed(fullName);
+            self.status = new Status(data.status)
             self.noAction = ko.computed(function() {
-                return this.status() === "no-action"
+                return this.status.value() === "no-action"
             }, self);
             self.followUp = ko.computed(function() {
-                return this.status() === "following-up";
+                return this.status.value() === "following-up";
             }, self);
 
-            self.status.subscribe(function(newStatus) {
-                if (self.status() === "new") {
-                    self.by(null)
+            self.status.value.subscribe(function(newStatus) {
+                if (self.status.value() === "new") {
+                    self.status.by(new Editor({}))
                 } else {
-                    self.by(activeUser)
+                    self.status.by(new Editor(activeUser))
                 }
+                $.ajax({
+                    type: "POST",
+                    url: "/submission",
+                    data: ko.toJSON( self ),
+                    contentType: "application/json"
+                })
             });
         }
 
