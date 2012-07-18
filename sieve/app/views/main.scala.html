@@ -35,15 +35,25 @@
 <div class="fluid-wrap">
     <div class="topbar">
         <div class="topbar-menu-container">
-            <ul class="topbar-menu pull-left"></ul>
+            <ul class="topbar-menu pull-left">
+                <li><a href="/responses">Responses</a></li>
+                <li><a href="/callouts">Callouts</a></li>
+                <li><a href="/groups">Groups</a></li>
+                <li><a href="/users">Users</a></li>
+            </ul>
             <ul class="topbar-menu pull-right">
-                <li>@user match {
+                @user match {
                     case Some(identity) => {
+                <li>
                         <a>@identity.fullName</a>
+                </li>
+                <li>
+                    <a href="logout">Logout</a>
+                </li>
                     }
                     case None => {
                     }
-                }</li>
+                }
             </ul>
         </div>
     </div>

@@ -13,6 +13,11 @@ object Application extends Controller {
       "other" -> text
     )
   )
+
+  def responses = AuthAction { r =>
+    implicit val id = r.identity
+    Ok(views.html.index(Scaffolding.submissions))
+  }
   
   def index = AuthAction { r =>
     implicit val id = r.identity
