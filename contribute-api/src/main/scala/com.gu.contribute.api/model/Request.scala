@@ -20,7 +20,11 @@ case class Request(@Key("_id") id: ObjectId = new ObjectId,
     startDate: DateTime = new DateTime,
     endDate: Option[DateTime],
     journalist: ObjectId,
-    contributors: List[ObjectId] = List()) extends Loggable
+    contributors: List[ObjectId] = List()) extends Loggable { //todo only include contributors in json for journalists
+
+  def upsert = Request.upsert(this)
+
+}
 
 object Request extends Loggable {
 
@@ -30,8 +34,17 @@ object Request extends Loggable {
     Dao.findOne(MongoDBObject("_id" -> new ObjectId(id)))
   }
 
+  def apply(title: String, description: String, imageUri: Option[String], endDate: Option[DateTime], journalistId: String, contributorIds: List[String]): Request = {
+    val contributors = contributorIds.map(new ObjectId(_))
+    Request(title = title, description = description, imageUri = imageUri, endDate = endDate, journalist = new ObjectId(journalistId), contributors = contributors)
+  }
+
   def getForContributor(userId: String): List[Request] = {
     Dao.find(MongoDBObject("contributors" -> new ObjectId(userId))).toList
+  }
+
+  def upsert(request: Request): Option[Request] = {
+    Dao.collection.findAndModify(Map("_id" -> request.id), DBObject(), DBObject(), false, request, true, true) map(grater[Request].asObject(_))
   }
 
 }

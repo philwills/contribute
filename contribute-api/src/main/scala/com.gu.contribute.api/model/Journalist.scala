@@ -14,7 +14,7 @@ import com.mongodb.casbah.commons.MongoDBObject
 
 case class Journalist(@Key("_id") id: ObjectId = new ObjectId,
     email: String,
-    groups: List[Map[String, List[ObjectId]]] = List()) extends Loggable
+    groups: List[JournalistGroup] = List()) extends Loggable
 
 object Journalist extends Loggable {
 
