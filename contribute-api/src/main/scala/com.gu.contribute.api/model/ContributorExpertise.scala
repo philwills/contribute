@@ -13,8 +13,7 @@ import com.gu.management.Loggable
 import com.mongodb.casbah.commons.MongoDBObject
 import org.joda.time.DateTime
 
-case class ContributorExpertise(@Key("_id") id: ObjectId = new ObjectId,
-    what: Expertise,
+case class ContributorExpertise(what: String,
     where: Option[String],
     from: Option[DateTime],
     to: Option[DateTime],

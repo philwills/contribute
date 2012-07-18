@@ -19,6 +19,15 @@ object Endpoint {
   def get(key: String) = all.get(key)
 }
 
+object GetJournalist extends Endpoint {
+  lazy val slug = "getJournalist"
+  lazy val path = "/journalist/*"
+  lazy val stringFormat = "/journalist/%s"
+  lazy val description = "Get a journalist"
+  lazy override val requiredParams = List(UserIdParam)
+  lazy val method = HttpGetMethod
+}
+
 object GetContributor extends Endpoint {
   lazy val slug = "getContributor"
   lazy val path = "/contributor/*"
@@ -43,5 +52,14 @@ object GetRequest extends Endpoint {
   lazy val stringFormat = "/request/%s"
   lazy val description = "Get a request"
   lazy override val requiredParams = List(RequestIdParam)
+  lazy val method = HttpGetMethod
+}
+
+object GetResponse extends Endpoint {
+  lazy val slug = "getResponse"
+  lazy val path = "/response/*"
+  lazy val stringFormat = "/response/%s"
+  lazy val description = "Get a response"
+  lazy override val requiredParams = List(ResponseIdParam)
   lazy val method = HttpGetMethod
 }
