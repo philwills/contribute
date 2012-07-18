@@ -4,6 +4,7 @@
 
 # Home page
 GET     /                           controllers.Application.index
+GET     /responses                  controllers.Application.responses
 
 GET     /submissions                controllers.Api.submissions
 POST    /submission                 controllers.Api.updateSubmission
