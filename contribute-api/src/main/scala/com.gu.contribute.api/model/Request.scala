@@ -34,8 +34,9 @@ object Request extends Loggable {
     Dao.findOne(MongoDBObject("_id" -> new ObjectId(id)))
   }
 
-  def apply(title: String, description: String, imageUri: Option[String], endDate: Option[DateTime], journalistId: String, contributors: List[String]): Request = {
-    Request(title = title, description = description, imageUri = imageUri, endDate = endDate, journalist = new ObjectId(journalistId), contributors = List())
+  def apply(title: String, description: String, imageUri: Option[String], endDate: Option[DateTime], journalistId: String, contributorIds: List[String]): Request = {
+    val contributors = contributorIds.map(new ObjectId(_))
+    Request(title = title, description = description, imageUri = imageUri, endDate = endDate, journalist = new ObjectId(journalistId), contributors = contributors)
   }
 
   def getForContributor(userId: String): List[Request] = {

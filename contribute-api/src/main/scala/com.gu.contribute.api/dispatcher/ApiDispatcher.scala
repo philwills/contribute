@@ -61,14 +61,15 @@ class ApiDispatcher extends JsonDispatcher with Loggable {
     val journalistId = "5005c600ad727225cb4f87c1" //todo... this will come from the logged in user
     val title = params.get("title") getOrElse halt(status = 400, reason = missingTitle)
     val description = params.get("description") getOrElse halt(status = 400, reason = missingDescription)
-    val contributors = multiParams("contributor").toList
-    if(contributors.isEmpty) halt(status = 400, reason = missingContributors)
+    val contributorIds = multiParams("contributor").toList
+    if(contributorIds.isEmpty) halt(status = 400, reason = missingContributors)
+    contributorIds.foreach(objectId => if(!ObjectId.isValid(objectId)) halt(status = 400, reason = invalidId))
     val imageUri = params.get("imageUri")
     val endDate = params.get("endDate") match {
       case Some(date) => Some(new DateTime(date))
       case _ => None
     }
-    val request = Request(title, description, imageUri, endDate, journalistId, contributors)
+    val request = Request(title, description, imageUri, endDate, journalistId, contributorIds)
     request.upsert match {
       case Some(r) => status(204)
       case None => halt(status = 500)
