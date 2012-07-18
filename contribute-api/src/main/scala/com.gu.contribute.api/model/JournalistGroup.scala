@@ -11,17 +11,11 @@ import com.mongodb.casbah.Imports._
 import com.gu.contribute.api.SalatTypeConversions._
 import com.gu.management.Loggable
 import com.mongodb.casbah.commons.MongoDBObject
+import org.joda.time.DateTime
 
-case class Journalist(@Key("_id") id: ObjectId = new ObjectId,
-    email: String,
-    groups: List[JournalistGroup] = List()) extends Loggable
+case class JournalistGroup(name: String,
+    members: List[String]) extends Loggable
 
-object Journalist extends Loggable {
-
-  object Dao extends SalatDAO[Journalist, ObjectId](collection = MongoDataSource.journalistsCollection) with CasbahConverstionHelpers
-
-  def apply(id: String): Option[Journalist] = {
-    Dao.findOne(MongoDBObject("_id" -> new ObjectId(id)))
-  }
+object JournalistGroup extends Loggable {
 
 }
