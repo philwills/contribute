@@ -13,8 +13,8 @@ import com.gu.management.Loggable
 import com.mongodb.casbah.commons.MongoDBObject
 
 case class Journalist(@Key("_id") id: ObjectId = new ObjectId,
-    email: String = "",
-    journalist: Boolean = true) extends Loggable
+    email: String,
+    groups: List[Map[String, List[ObjectId]]] = List()) extends Loggable
 
 object Journalist extends Loggable {
 

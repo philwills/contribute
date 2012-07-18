@@ -13,9 +13,9 @@ import com.gu.management.Loggable
 import com.mongodb.casbah.commons.MongoDBObject
 import org.joda.time.DateTime
 
-case class ContributorNote(@Key("_id") id: ObjectId = new ObjectId,
-    text: String,
-    from: Contributor) extends Loggable
+case class ContributorNote(text: String,
+    from: ObjectId,
+    date: DateTime = new DateTime) extends Loggable
 
 object ContributorNote extends Loggable {
 

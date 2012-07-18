@@ -14,3 +14,8 @@ object RequestIdParam extends Param {
   lazy val name = "requestId"
   lazy val description = "The request ID"
 }
+
+object ResponseIdParam extends Param {
+  lazy val name = "responseId"
+  lazy val description = "The response ID"
+}

@@ -11,11 +11,12 @@ import com.mongodb.casbah.Imports._
 import com.gu.contribute.api.SalatTypeConversions._
 import com.gu.management.Loggable
 import com.mongodb.casbah.commons.MongoDBObject
+import org.joda.time.DateTime
 
 case class Contributor(@Key("_id") id: ObjectId = new ObjectId,
-    email: String = "",
-    expertise: List[ObjectId] = List(),
-    notes: List[ObjectId] = List()) extends Loggable
+    email: String,
+    expertise: List[ContributorExpertise],
+    notes: List[ContributorNote] = List()) extends Loggable
 
 object Contributor extends Loggable {
 

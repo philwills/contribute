@@ -14,8 +14,8 @@ import com.mongodb.casbah.commons.MongoDBObject
 import org.joda.time.DateTime
 
 case class Request(@Key("_id") id: ObjectId = new ObjectId,
-    title: String = "",
-    description: String = "",
+    title: String,
+    description: String,
     imageUri: Option[String],
     startDate: DateTime = new DateTime,
     endDate: Option[DateTime],
