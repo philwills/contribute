@@ -4,11 +4,13 @@ import com.gu.contribute.api._
 import com.gu.contribute.api.model._
 import org.scalatra.{SinatraRouteMatcher, RouteMatcher}
 import com.gu.management.Loggable
+import org.joda.time.DateTime
 
 class ApiDispatcher extends JsonDispatcher with Loggable {
 
   val ok = "OK"
   lazy val missingId = "An ID was not provided"
+  lazy val missingText = "Text was not provided"
   lazy val userNotFound = "User was not found"
   lazy val requestNotFound = "Request was not found"
   lazy val responseNotFound = "Response was not found"
@@ -30,13 +32,31 @@ class ApiDispatcher extends JsonDispatcher with Loggable {
   get(GetContributorRequests) {
     val userId = multiParams("splat").headOption getOrElse halt(status = 400, reason = missingId)
     val requests = Request.getForContributor(userId)
-    ContributorRequestResponse(ok, requests)
+    ContributorRequestsResponse(ok, requests)
   }
 
   get(GetRequest) {
     val requestId = multiParams("splat").headOption getOrElse halt(status = 400, reason = missingId)
     val request = Request(requestId) getOrElse halt(status = 404, reason = requestNotFound)
     RequestResponse(ok, request)
+  }
+
+  get(GetRequestResponses) {
+    val requestId = multiParams("splat").headOption getOrElse halt(status = 400, reason = missingId)
+    val responses = Response.getForRequest(requestId)
+    RequestResponsesResponse(ok, responses)
+  }
+
+  post(Respond) {
+    val contributorId = "5005c600ad727225cb4f87c1" //todo... this will come from the logged in user
+    val requestId = multiParams("splat").headOption getOrElse halt(status = 400, reason = missingId)
+    val text = params.get("text") getOrElse halt(status = 400, reason = missingText)
+    val imageUri = params.get("imageUri")
+    val response = Response(contributorId, requestId, text, imageUri)
+    response.upsert match {
+      case Some(r) => status(204)
+      case None => halt(status = 500)
+    }
   }
 
   get(GetResponse) {
