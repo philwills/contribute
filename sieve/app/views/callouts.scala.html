@@ -1,0 +1,26 @@
+@(callouts: Seq[Callouts])(implicit user: Option[Identity])
+
+@main("title") {
+    <style>
+        span.editor:before {
+            content: "("
+        }
+        span.editor:after {
+            content: ")"
+        }
+        li.no-action {
+            opacity: 0.3;
+        }
+
+    </style>
+
+    <h1>Your callouts</h1>
+
+    <ul>
+    @callouts.map { call =>
+        <li>
+
+        </li>
+    }
+    </ul>
+}

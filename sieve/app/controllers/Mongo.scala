@@ -6,6 +6,7 @@ import com.novus.salat._
 import com.novus.salat.annotations._
 import com.novus.salat.global._
 import dao.SalatDAO
+import com.novus.salat.annotations._
 
 object Mongo {
   val uri = MongoURI("mongodb://sieveapp:colander@flame.mongohq.com:27040/sieve")
@@ -28,3 +29,17 @@ object Mongo {
 object Journalists extends SalatDAO[Identity, String] (
   collection = Mongo.journalists
 )
+object Callouts extends SalatDAO[Callout, ObjectId] (
+  collection = Mongo.callouts
+) {
+  def forJournalist(journo: Identity) = {
+    find(MongoDBObject("journalist" -> journo.openid))
+  }
+}
+
+case class Callout(
+                    @Key("_id") id: ObjectId = new ObjectId(),
+                    journalist: String,
+                    title: String,
+                    description: String,
+                    users: List[ObjectId])

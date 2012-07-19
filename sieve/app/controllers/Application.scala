@@ -18,6 +18,11 @@ object Application extends Controller {
     implicit val id = r.identity
     Ok(views.html.index(Scaffolding.submissions))
   }
+
+  def callouts = AuthAction { r =>
+    implicit val id = r.identity
+    Ok(views.html.callouts(Scaffolding.submissions))
+  }
   
   def index = AuthAction { r =>
     implicit val id = r.identity
