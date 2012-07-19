@@ -26,4 +26,8 @@ object Contributor extends Loggable {
     Dao.findOne(MongoDBObject("_id" -> new ObjectId(id)))
   }
 
+  def retrieveAll() = {
+    Dao.find(MongoDBObject()).sort(MongoDBObject("date" -> -1)).toList
+  }
+
 }

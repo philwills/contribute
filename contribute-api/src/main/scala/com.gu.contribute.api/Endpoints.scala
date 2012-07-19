@@ -13,7 +13,7 @@ abstract class Endpoint {
 object Endpoint {
   lazy val all = Map(
     GetJournalist.slug -> GetJournalist,
-    AddJournalist.slug -> AddJournalist,
+    SearchContributors.slug -> SearchContributors,
     GetContributor.slug -> GetContributor,
     GetContributorRequests.slug -> GetContributorRequests,
     GetRequest.slug -> GetRequest,
@@ -33,12 +33,11 @@ object GetJournalist extends Endpoint {
   lazy val method = HttpGetMethod
 }
 
-object AddJournalist extends Endpoint {
-  lazy val slug = "addJournalist"
-  lazy val path = "/journalist"
-  lazy val stringFormat = "/journalist"
-  lazy val description = "Add a new journalist"
-  lazy override val requiredParams = List(IdentityIdParam)
+object SearchContributors extends Endpoint {
+  lazy val slug = "searchContributors"
+  lazy val path = "/contributor/search"
+  lazy val stringFormat = "/contributor/search"
+  lazy val description = "Search contributors"
   lazy val method = HttpPostMethod
 }
 
