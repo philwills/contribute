@@ -76,7 +76,7 @@ class ApiDispatcher extends JsonDispatcher with Loggable {
   }
 
   post(AddRequest) {
-    val journalistId = "5007fb0b903943498beede78" //todo... this will come from the logged in user
+    val journalistId = "50086ac030ca3aeb3bfe34cb" //todo... this will come from the logged in user
     val title = params.get("title") getOrElse halt(status = 400, reason = missingTitle)
     val description = params.get("description") getOrElse halt(status = 400, reason = missingDescription)
     val contributorIds = multiParams("contributor").toList
@@ -95,7 +95,7 @@ class ApiDispatcher extends JsonDispatcher with Loggable {
   }
 
   post(Respond) {
-    val contributorId = "5007fb0b903943498beede74" //todo... this will come from the logged in user
+    val contributorId = "50086ac030ca3aeb3bfe34c7" //todo... this will come from the logged in user
     val requestId = params.get("requestId") getOrElse halt(status = 400, reason = missingId)
     if(!ObjectId.isValid(requestId)) halt(status = 400, reason = invalidId)
     val text = params.get("text") getOrElse halt(status = 400, reason = missingText)

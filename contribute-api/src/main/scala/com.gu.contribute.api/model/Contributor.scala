@@ -1,33 +1,42 @@
 package com.gu.contribute.api.model
 
-import com.novus.salat.annotations._
 import org.bson.types.ObjectId
-import com.novus.salat.dao.SalatDAO
-import com.gu.contribute.api.mongo.MongoDataSource
-import com.gu.contribute.api.CasbahConverstionHelpers
-import com.novus.salat._
-import com.novus.salat.global._
-import com.mongodb.casbah.Imports._
-import com.gu.contribute.api.SalatTypeConversions._
 import com.gu.management.Loggable
-import com.mongodb.casbah.commons.MongoDBObject
 import org.joda.time.DateTime
 
-case class Contributor(@Key("_id") id: ObjectId = new ObjectId,
+case class Contributor(id: ObjectId = new ObjectId,
+    identity: String,
     email: String,
+    firstName: Option[String],
+    lastName: Option[String],
+    gender: Option[String],
+    dateOfBirth: Option[DateTime],
+    country: Option[String],
     expertise: List[ContributorExpertise],
     notes: List[ContributorNote] = List()) extends Loggable
 
 object Contributor extends Loggable {
 
-  object Dao extends SalatDAO[Contributor, ObjectId](collection = MongoDataSource.contributorsCollection) with CasbahConverstionHelpers
-
   def apply(id: String): Option[Contributor] = {
-    Dao.findOne(MongoDBObject("_id" -> new ObjectId(id)))
+    val contributeContributor = ContributeContributor(id).get
+    val user = User(contributeContributor.identity)
+    val contributor = contributeContributor2Contributor(contributeContributor, user)
+    Some(contributor)
   }
 
-  def retrieveAll() = {
-    Dao.find(MongoDBObject()).toList
+  def retrieveAll(): List[Contributor] = {
+    ContributeContributor.retrieveAll().map(contributeContributor => contributeContributor2Contributor(contributeContributor, User(contributeContributor.identity)))
+  }
+
+  def contributeContributor2Contributor(contributeContributor: ContributeContributor, user: User) = {
+    val identity = user.id
+    val email = user.primaryEmailAddress
+    val firstName = user.privateFields.get("firstName")
+    val lastName = user.privateFields.get("secondName")
+    val gender = user.privateFields.get("gender")
+    val dateOfBirth = user.dates.get("dateOfBirth")
+    val country = user.privateFields.get("country")
+    Contributor(contributeContributor.id, identity, email, firstName, lastName, gender, dateOfBirth, country, contributeContributor.expertise, contributeContributor.notes)
   }
 
 }

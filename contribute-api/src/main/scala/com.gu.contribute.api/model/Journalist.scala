@@ -1,27 +1,37 @@
 package com.gu.contribute.api.model
 
-import com.novus.salat.annotations._
 import org.bson.types.ObjectId
-import com.novus.salat.dao.SalatDAO
-import com.gu.contribute.api.mongo.MongoDataSource
-import com.gu.contribute.api.CasbahConverstionHelpers
-import com.novus.salat._
-import com.novus.salat.global._
-import com.mongodb.casbah.Imports._
-import com.gu.contribute.api.SalatTypeConversions._
 import com.gu.management.Loggable
-import com.mongodb.casbah.commons.MongoDBObject
+import org.joda.time.DateTime
 
-case class Journalist(@Key("_id") id: ObjectId = new ObjectId,
+case class Journalist(id: ObjectId = new ObjectId,
+    identity: String,
     email: String,
+    firstName: Option[String],
+    lastName: Option[String],
+    gender: Option[String],
+    dateOfBirth: Option[DateTime],
+    country: Option[String],
     groups: List[JournalistGroup] = List()) extends Loggable
 
 object Journalist extends Loggable {
 
-  object Dao extends SalatDAO[Journalist, ObjectId](collection = MongoDataSource.journalistsCollection) with CasbahConverstionHelpers
-
   def apply(id: String): Option[Journalist] = {
-    Dao.findOne(MongoDBObject("_id" -> new ObjectId(id)))
+    val contributeJournalist = ContributeJournalist(id).get
+    val user = User(contributeJournalist.identity)
+    val Journalist = contributeJournalist2Journalist(contributeJournalist, user)
+    Some(Journalist)
+  }
+
+  def contributeJournalist2Journalist(contributeJournalist: ContributeJournalist, user: User) = {
+    val identity = user.id
+    val email = user.primaryEmailAddress
+    val firstName = user.privateFields.get("firstName")
+    val lastName = user.privateFields.get("secondName")
+    val gender = user.privateFields.get("gender")
+    val dateOfBirth = user.dates.get("dateOfBirth")
+    val country = user.privateFields.get("country")
+    Journalist(contributeJournalist.id, identity, email, firstName, lastName, gender, dateOfBirth, country, contributeJournalist.groups)
   }
 
 }
