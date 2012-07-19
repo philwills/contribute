@@ -37,8 +37,8 @@ class ApiDispatcher extends JsonDispatcher with Loggable {
     JournalistResponse(ok, user)
   }
 
-  post(SearchContributors) {
-    val users = Contributor.retrieveAll() //todo clearly this doesn't actually find anything
+  get(GetContributors) {
+    val users = Contributor.retrieveAll()
     ContributorsResponse(ok, users)
   }
 
@@ -54,6 +54,11 @@ class ApiDispatcher extends JsonDispatcher with Loggable {
     if(!ObjectId.isValid(userId)) halt(status = 400, reason = invalidId)
     val requests = Request.getForContributor(userId)
     ContributorRequestsResponse(ok, requests)
+  }
+
+  get(GetRequests) {
+    val requests = Request.retrieveAll()
+    RequestsResponse(ok, requests)
   }
 
   get(GetRequest) {

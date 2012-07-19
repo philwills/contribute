@@ -13,9 +13,10 @@ abstract class Endpoint {
 object Endpoint {
   lazy val all = Map(
     GetJournalist.slug -> GetJournalist,
-    SearchContributors.slug -> SearchContributors,
+    GetContributors.slug -> GetContributors,
     GetContributor.slug -> GetContributor,
     GetContributorRequests.slug -> GetContributorRequests,
+    GetRequests.slug -> GetRequests,
     GetRequest.slug -> GetRequest,
     GetRequestResponses.slug -> GetRequestResponses,
     AddRequest.slug -> AddRequest,
@@ -33,12 +34,12 @@ object GetJournalist extends Endpoint {
   lazy val method = HttpGetMethod
 }
 
-object SearchContributors extends Endpoint {
-  lazy val slug = "searchContributors"
-  lazy val path = "/contributor/search"
-  lazy val stringFormat = "/contributor/search"
-  lazy val description = "Search contributors"
-  lazy val method = HttpPostMethod
+object GetContributors extends Endpoint {
+  lazy val slug = "getContributors"
+  lazy val path = "/contributors"
+  lazy val stringFormat = "/contributors"
+  lazy val description = "Get contributors"
+  lazy val method = HttpGetMethod
 }
 
 object GetContributor extends Endpoint {
@@ -54,6 +55,14 @@ object GetContributorRequests extends Endpoint {
   lazy val path = "/contributor/:userId/requests"
   lazy val stringFormat = "/contributor/%s/requests"
   lazy val description = "Get a contributor's requests"
+  lazy val method = HttpGetMethod
+}
+
+object GetRequests extends Endpoint {
+  lazy val slug = "getRequests"
+  lazy val path = "/requests"
+  lazy val stringFormat = "/requests"
+  lazy val description = "Get requests"
   lazy val method = HttpGetMethod
 }
 
