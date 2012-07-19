@@ -6,13 +6,13 @@
     <display-name>Contribute API</display-name>
 
     <servlet>
-        <servlet-name>ApiDispatcher</servlet-name>
-        <servlet-class>com.gu.contribute.api.dispatcher.ApiDispatcher</servlet-class>
+        <servlet-name>DocsDispatcher</servlet-name>
+        <servlet-class>com.gu.contribute.api.dispatcher.DocumentationDispatcher</servlet-class>
     </servlet>
 
     <servlet>
-        <servlet-name>DocsDispatcher</servlet-name>
-        <servlet-class>com.gu.contribute.api.dispatcher.DocumentationDispatcher</servlet-class>
+        <servlet-name>ApiDispatcher</servlet-name>
+        <servlet-class>com.gu.contribute.api.dispatcher.ApiDispatcher</servlet-class>
     </servlet>
 
     <filter>

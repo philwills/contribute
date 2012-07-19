@@ -1,7 +1,4 @@
-<%@ val endpoints: List[com.gu.contribute.Endpoint] %>
-
-<ul>
-#for (e <- endpoints)
-    <li><a href="docs/${e.slug}">${e.slug}</a></li>
-#end
-</ul>
+<div class="hd zone-border zone-border-medium">
+	<h2 class="sub-heading">Hello</h2>
+</div>
+<p>Tah-dah! It's the Contribute API documentation</p>
