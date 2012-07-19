@@ -21,7 +21,7 @@ object Application extends Controller {
 
   def callouts = AuthAction { r =>
     implicit val id = r.identity
-    Ok(views.html.callouts(Scaffolding.submissions))
+    Ok(views.html.callouts(Callouts.forJournalist(id.get).toSeq))
   }
   
   def index = AuthAction { r =>
