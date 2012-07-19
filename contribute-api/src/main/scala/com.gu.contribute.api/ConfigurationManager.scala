@@ -14,7 +14,7 @@ object ConfigurationManager {
 
   def getOrElse(propertyName: String, defaultValue: String) = config.getStringProperty(propertyName, defaultValue)
 
-  val config = new ConfigurationFactory getConfiguration ("contribute-api", "conf/contribute-api")
+  val config = new ConfigurationFactory getConfiguration("contribute-api", "conf/contribute-api")
 
   lazy val mongoDbName = ConfigurationManager("mongo.database.name")
   lazy val mongoDbUsername = ConfigurationManager("mongo.database.username")

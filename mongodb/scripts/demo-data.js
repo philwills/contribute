@@ -13,10 +13,6 @@ db.createCollection("requests");
 db.createCollection("responses");
 
 
-var journalistDenis = new ObjectId();
-db.journalists.insert({"_id": journalistDenis, "email": "denis.campbell@observer.co.uk"});
-
-
 var contributorBob = new ObjectId();
 db.contributors.insert({
 	"_id": contributorBob,
@@ -56,6 +52,17 @@ db.contributors.insert({
 		{"what": "Triathlon", "description": "I joined my local Triathlon club five years ago and have been competing in mid-range events for the past few years.", "from": new Date(2007, 1, 1), "type": "personal"},
 		{"what": "Business Management", "where": "University of Warwick", "from": new Date(1996, 1, 1), "to": new Date(1999, 1, 1), "type": "educational"}
 	]
+});
+
+
+var journalistDenis = new ObjectId();
+db.journalists.insert({
+    "_id": journalistDenis,
+    "email": "denis.campbell@observer.co.uk",
+    "groups": [
+        {"name": "Reliable on healthcare", "members": [contributorBob, contributorJane, contributorEmily]},
+        {"name": "Normally available on weekdays", "members": [contributorJane, contributorSimon]}
+    ]
 });
 
 
