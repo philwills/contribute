@@ -1,9 +1,14 @@
 package controllers
 
 import play.api._
+import libs.ws.WS
 import play.api.data._
 import play.api.data.Forms._
 import play.api.mvc._
+import com.novus.salat._
+import json.TimestampDateStrategy
+import org.scala_tools.time.StaticDateTimeZone
+import org.joda.time.DateTime
 
 object Application extends Controller {
 
@@ -45,7 +50,22 @@ object Application extends Controller {
     implicit val id = r.identity
     Ok(views.html.index(Scaffolding.submissions))
   }
+
+  def users = AuthAction { implicit r =>
+    implicit val id = r.identity
+    Async {
+      WS.url("http://ec2-46-137-10-183.eu-west-1.compute.amazonaws.com:8080/contributors").get map { result =>
+        implicit val ctx = context.ctx
+        val userJson = (result.json \"content").toString
+        val users = grater[User].fromJSONArray(userJson)
+        Ok(views.html.users(users))
+      }
+    }
+  }
 }
+
+case class User(id: String, identity: String, email: String, expertise: List[Expertise])
+case class Expertise(what: String, where: Option[String], from: DateTime, description: String)
 
 case class Submission(id: String, text: String, status: SubmissionStatus)
 
@@ -62,4 +82,21 @@ object Scaffolding {
   )
 
   lazy val phil = Identity("", "phil.wills@guardian.co.uk", "Phil", "Wills")
+}
+
+import com.novus.salat.{TypeHintFrequency, StringTypeHintStrategy, Context}
+import com.novus.salat.json.{StringDateStrategy, JSONConfig}
+import org.joda.time.format.ISODateTimeFormat
+import org.joda.time.DateTimeZone
+
+package object context {
+  import org.scala_tools.time.Imports._
+
+  implicit val ctx = new Context {
+    val name = "json-test-context"
+    override val typeHintStrategy = StringTypeHintStrategy(when = TypeHintFrequency.WhenNecessary,
+      typeHint = "_t")
+    override val jsonConfig = JSONConfig(dateStrategy =
+      TimestampDateStrategy(StaticDateTimeZone.forID("Europe/London")))
+  }
 }

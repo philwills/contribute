@@ -16,6 +16,8 @@ POST    /callout                    controllers.Application.callout
 
 GET     /api/users                  controllers.Api.users
 
+GET     /users                      controllers.Application.users
+
 GET     /login                      controllers.Login.login
 POST    /login                      controllers.Login.loginPost
 GET     /openIDCallback             controllers.Login.openIDCallback
