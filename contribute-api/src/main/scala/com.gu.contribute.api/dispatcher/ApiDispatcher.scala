@@ -22,6 +22,14 @@ class ApiDispatcher extends JsonDispatcher with Loggable {
 
   implicit def endpoint2RouteMatcher(endpoint: Endpoint): RouteMatcher = new SinatraRouteMatcher(endpoint.path, requestPath)
 
+  get("/") {
+    redirect("docs")
+  }
+
+  notFound {
+    response.setStatus(404)
+  }
+
   get(GetJournalist) {
     val userId = params.get("userId") getOrElse halt(status = 400, reason = missingId)
     if(!ObjectId.isValid(userId)) halt(status = 400, reason = invalidId)

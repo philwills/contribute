@@ -3,16 +3,16 @@
         "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-    <display-name>Flexible Content API</display-name>
-
-    <servlet>
-        <servlet-name>ApiDispatcher</servlet-name>
-        <servlet-class>com.gu.contribute.api.dispatcher.ApiDispatcher</servlet-class>
-    </servlet>
+    <display-name>Contribute API</display-name>
 
     <servlet>
         <servlet-name>DocsDispatcher</servlet-name>
         <servlet-class>com.gu.contribute.api.dispatcher.DocumentationDispatcher</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>ApiDispatcher</servlet-name>
+        <servlet-class>com.gu.contribute.api.dispatcher.ApiDispatcher</servlet-class>
     </servlet>
 
     <filter>
