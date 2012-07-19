@@ -31,8 +31,16 @@ object Api {
 
   def response = Action { req =>
     req.body.asJson map { js: JsValue =>
-      Ok("")
-    } getOrElse (InternalServerError)
+      Responses.insert(Response(
+        id = new ObjectId().toString,
+        user = (js \ "user").as[String],
+        callout  = (js \ "callout").as[String],
+        text = (js \ "text").as[String]
+      ))
+      Ok(Responses.count().toString)
+    } getOrElse {
+      InternalServerError
+    }
   }
 }
 
