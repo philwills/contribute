@@ -19,9 +19,26 @@ object Application extends Controller {
     Ok(views.html.index(Scaffolding.submissions))
   }
 
-  def callouts = AuthAction { r =>
+  val calloutForm = Form(
+    mapping(
+      "title" -> text,
+      "description" -> text
+   )((title, description) => Callout(title, description))
+    ((callout: Callout) => Some(( callout.title, callout.description))))
+
+  def callouts = AuthAction { implicit r =>
     implicit val id = r.identity
-    Ok(views.html.callouts(Callouts.forJournalist(id.get).toSeq))
+    Ok(views.html.callouts(
+      Callouts.forJournalist(id.get).toSeq,
+      calloutForm
+    ))
+  }
+
+  def callout = AuthAction { implicit r =>
+    implicit val id = r.identity
+    val partialCallout = calloutForm.bindFromRequest.get
+    Callouts.save(partialCallout.copy(journalist = id.get.openid))
+    Redirect(routes.Application.callouts)
   }
   
   def index = AuthAction { r =>

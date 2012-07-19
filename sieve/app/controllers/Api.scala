@@ -28,5 +28,11 @@ object Api {
       ListMap.empty ++ x.toMap
     }))
   }
+
+  def response = Action { req =>
+    req.body.asJson map { js: JsValue =>
+      Ok("")
+    } getOrElse (InternalServerError)
+  }
 }
 

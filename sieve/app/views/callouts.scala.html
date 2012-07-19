@@ -1,6 +1,7 @@
-@(callouts: Seq[Callout])(implicit user: Option[Identity])
+@(callouts: Seq[Callout], newCallout: Form[Callout])(implicit user: Option[Identity])
 
-@main("title") {
+
+@main("Callouts") {
     <style>
         span.editor:before {
             content: "("
@@ -11,16 +12,44 @@
         li.no-action {
             opacity: 0.3;
         }
+        input[type="text"] {
+            width: 50%;
+        }
+        textarea {
+            width: 100%;
+            height: 6em;
+        }
+
+        h1 {
+            margin-bottom: 1em;
+        }
+
+        ul.callouts li {
+            border-bottom: 1px black dashed;
+        }
+
+        form {
+            padding-top: 1em;
+        }
 
     </style>
 
     <h1>Your callouts</h1>
 
-    <ul>
+    <ul class="callouts">
     @callouts.map { call =>
         <li>
-
+            <h4>@call.title</h4>
+            <p>@call.description</p>
         </li>
     }
     </ul>
+
+    @helper.form(action = routes.Application.callout) {
+        <h3>New callout</h3>
+        @helper.inputText(newCallout("title"))
+        @helper.textarea(newCallout("description"))
+        <input type="submit">
+    }
+
 }
