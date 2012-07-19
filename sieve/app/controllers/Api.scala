@@ -5,6 +5,9 @@ import play.api.mvc._
 import play.api.mvc.Results._
 import play.api.{Logger, Play}
 import play.api.libs.json.JsValue
+import com.mongodb.casbah.Imports._
+import scala.collection.JavaConversions._
+import collection.immutable.ListMap
 
 object Api {
   implicit val formats = Serialization.formats(NoTypeHints)
@@ -21,7 +24,9 @@ object Api {
   }
 
   def users = Action {
-    Ok(Serialization.write(Mongo.users.toList))
+    Ok(Serialization.write(Mongo.users.map{ x =>
+      ListMap.empty ++ x.toMap
+    }))
   }
 }
 

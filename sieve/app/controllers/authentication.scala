@@ -8,8 +8,9 @@ import net.liftweb.json.Serialization.{read, write}
 import play.api.libs.openid.OpenID
 import play.api.libs.concurrent.{Thrown, Redeemed}
 import play.api.Logger
+import com.novus.salat.annotations._
 
-case class Identity(openid: String, email: String, firstName: String, lastName: String) {
+case class Identity(@Key("_id") openid: String, email: String, firstName: String, lastName: String) {
   implicit val formats = Serialization.formats(NoTypeHints)
 
   def writeJson = write(this)
@@ -111,6 +112,7 @@ object Login extends Controller {
             )
             loginLog.info(credentials.email)
             if (credentials.emailDomain == "guardian.co.uk") {
+              Journalists.save(credentials)
               Redirect(session.get("loginFromUrl").getOrElse("/")).withSession {
                 session + ("identity" -> credentials.writeJson) - "loginFromUrl"
               }
