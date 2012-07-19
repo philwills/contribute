@@ -38,7 +38,7 @@ class ApiDispatcher extends JsonDispatcher with Loggable {
   }
 
   post(SearchContributors) {
-    val users = Contributor.retrieveAll()
+    val users = Contributor.retrieveAll() //todo clearly this doesn't actually find anything
     ContributorsResponse(ok, users)
   }
 
