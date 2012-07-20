@@ -58,7 +58,8 @@ case class Callout(
                     title: String,
                     description: String,
                     users: List[String] = List(),
-                    createdOn: DateTime = DateTime.now())
+                    createdOn: DateTime = DateTime.now(),
+                    sentOn: Option[DateTime] = None)
 
 object Callout{
   def apply(title: String, description: String): Callout = Callout(

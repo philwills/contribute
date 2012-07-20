@@ -41,6 +41,11 @@
         <li>
             <h4>@call.title</h4>
             <p>@call.description</p>
+            <p>@call.sentOn.map { sent =>
+                <h4>Sent: @sent </h4>
+            }.getOrElse {
+                <button value="@call.id">Send</button>
+            }</p>
         </li>
     }
     </ul>
@@ -52,4 +57,12 @@
         <input type="submit">
     }
 
+    <script>
+        $(function() {
+            $("button").click (function(){
+                $.post("/api/callout/" + $(this).attr("value") + "/send")
+                $(this).replaceWith("<h4>Sent</h4>")
+            })
+        })
+    </script>
 }

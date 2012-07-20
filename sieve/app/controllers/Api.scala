@@ -8,6 +8,7 @@ import play.api.libs.json.JsValue
 import com.mongodb.casbah.Imports._
 import scala.collection.JavaConversions._
 import collection.immutable.ListMap
+import org.joda.time.DateTime
 
 object Api {
   implicit val formats = Serialization.formats(NoTypeHints)
@@ -62,6 +63,13 @@ object Api {
     } getOrElse {
       InternalServerError
     }
+  }
+
+  def sendCallout(id: String) = Action { req =>
+    Callouts.findOneById(id) map  { callout =>
+      Callouts.save(callout.copy(sentOn = Some(DateTime.now)))
+      Ok("Sent")
+    } getOrElse InternalServerError
   }
 }
 
