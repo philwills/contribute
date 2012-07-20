@@ -39,6 +39,10 @@ object Request extends Loggable {
     Request(title = title, description = description, imageUri = imageUri, endDate = endDate, journalist = new ObjectId(journalistId), contributors = contributors)
   }
 
+  def retrieveAll() = {
+    Dao.find(MongoDBObject()).toList
+  }
+
   def getForContributor(userId: String): List[Request] = {
     Dao.find(MongoDBObject("contributors" -> new ObjectId(userId))).toList
   }

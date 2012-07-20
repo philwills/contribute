@@ -16,7 +16,7 @@ db.createCollection("responses");
 var contributorBob = new ObjectId();
 db.contributors.insert({
 	"_id": contributorBob,
-	"email": "bobsmith@example.com",
+	"identity": "bobsmith",
 	"expertise": [
 		{"what": "Primary care, NHS trusts", "where": "Nottingham", "description": "I have worked in primary care support for over two decades, managing the relationship between contracted service providers and hospital services.", "from": new Date(1985, 1, 1), "to": new Date(2010, 1, 1), "type": "professional"},
 		{"what": "Sheds", "description": "I design and build my own sheds and have done for several years.", "from": new Date(1985, 1, 1), "to": new Date(2010, 1, 1), "type": "personal"},
@@ -26,7 +26,7 @@ db.contributors.insert({
 var contributorJane = new ObjectId();
 db.contributors.insert({
 	"_id": contributorJane,
-	"email": "janefellows@example.com",
+	"identity": "janefellows",
 	"expertise": [
 		{"what": "Hairdressing", "where": "Nottingham", "description": "I am a freelance hairdresser and have won numerous awards as a colourist.", "from": new Date(2000, 1, 1), "to": new Date(2005, 1, 1), "type": "professional"},
 		{"what": "Diabetes", "description": "I've been in and out of hospital all my life due to diabetes. Three years ago I had my leg amputated.", "from": new Date(1980, 1, 1), "type": "personal"},
@@ -36,7 +36,7 @@ db.contributors.insert({
 var contributorEmily = new ObjectId();
 db.contributors.insert({
 	"_id": contributorEmily,
-	"email": "emilygraham@example.com",
+	"identity": "emilygraham",
 	"expertise": [
 		{"what": "Mental health with adults, NHS management", "where": "Leeds", "description": "I am a clinical physcologist specialising in schizophrenia.", "from": new Date(1981, 1, 1), "type": "professional"},
 		{"what": "Singing", "description": "I have been  member of my local church choir for the past 20 years.", "from": new Date(1967, 1, 1), "type": "personal"},
@@ -46,7 +46,7 @@ db.contributors.insert({
 var contributorSimon = new ObjectId();
 db.contributors.insert({
 	"_id": contributorSimon,
-	"email": "simonbell@example.com",
+	"identity": "simonbell",
 	"expertise": [
 		{"what": "Finance", "where": "London", "description": "I am an independent financial consultant.", "from": new Date(2002, 1, 1), "type": "professional"},
 		{"what": "Triathlon", "description": "I joined my local Triathlon club five years ago and have been competing in mid-range events for the past few years.", "from": new Date(2007, 1, 1), "type": "personal"},
@@ -58,7 +58,7 @@ db.contributors.insert({
 var journalistDenis = new ObjectId();
 db.journalists.insert({
     "_id": journalistDenis,
-    "email": "denis.campbell@observer.co.uk",
+    "identity": "denis.campbell",
     "groups": [
         {"name": "Reliable on healthcare", "members": [contributorBob, contributorJane, contributorEmily]},
         {"name": "Normally available on weekdays", "members": [contributorJane, contributorSimon]}

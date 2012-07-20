@@ -37,14 +37,10 @@ class ApiDispatcher extends JsonDispatcher with Loggable {
     JournalistResponse(ok, user)
   }
 
-  //  get(AddJournalist) {
-  //    val id = params.get("id") getOrElse halt(status = 400, reason = missingId) //todo integrate with identity
-  //    val user = Journalist(id)
-  //    user.upsert match {
-  //      case Some(r) => status(204)
-  //      case None => halt(status = 500)
-  //    }
-  //  }
+  get(GetContributors) {
+    val users = Contributor.retrieveAll()
+    ContributorsResponse(ok, users)
+  }
 
   get(GetContributor) {
     val userId = params.get("userId") getOrElse halt(status = 400, reason = missingId)
@@ -58,6 +54,11 @@ class ApiDispatcher extends JsonDispatcher with Loggable {
     if(!ObjectId.isValid(userId)) halt(status = 400, reason = invalidId)
     val requests = Request.getForContributor(userId)
     ContributorRequestsResponse(ok, requests)
+  }
+
+  get(GetRequests) {
+    val requests = Request.retrieveAll()
+    RequestsResponse(ok, requests)
   }
 
   get(GetRequest) {
@@ -75,7 +76,7 @@ class ApiDispatcher extends JsonDispatcher with Loggable {
   }
 
   post(AddRequest) {
-    val journalistId = "5005c600ad727225cb4f87c1" //todo... this will come from the logged in user
+    val journalistId = "50086ac030ca3aeb3bfe34cb" //todo... this will come from the logged in user
     val title = params.get("title") getOrElse halt(status = 400, reason = missingTitle)
     val description = params.get("description") getOrElse halt(status = 400, reason = missingDescription)
     val contributorIds = multiParams("contributor").toList
@@ -94,7 +95,7 @@ class ApiDispatcher extends JsonDispatcher with Loggable {
   }
 
   post(Respond) {
-    val contributorId = "5005c600ad727225cb4f87c1" //todo... this will come from the logged in user
+    val contributorId = "50086ac030ca3aeb3bfe34c7" //todo... this will come from the logged in user
     val requestId = params.get("requestId") getOrElse halt(status = 400, reason = missingId)
     if(!ObjectId.isValid(requestId)) halt(status = 400, reason = invalidId)
     val text = params.get("text") getOrElse halt(status = 400, reason = missingText)
