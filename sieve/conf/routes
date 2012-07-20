@@ -20,6 +20,8 @@ POST    /api/callout/:id/send           controllers.Api.sendCallout(id: String)
 GET     /api/users                  controllers.Api.users
 
 GET     /users                      controllers.Application.users
+GET     /groups                      controllers.Application.groups
+POST    /group                      controllers.Application.group
 
 GET     /login                      controllers.Login.login
 POST    /login                      controllers.Login.loginPost

@@ -26,6 +26,8 @@ object Mongo {
 
   val users = db("users")
 
+  val groups = db("groups")
+
   val callouts = db("callouts")
 
   val responses = db("responses")
@@ -51,6 +53,18 @@ object Responses extends SalatDAO[CalloutResponse, String] (
     find(MongoDBObject("callout" -> callout.id))
   }
 }
+object Groups extends SalatDAO[Group, String] (
+  collection = Mongo.groups
+) {
+
+  def forJournalist(journo: Identity) = {
+    find(MongoDBObject("journalist" -> journo.openid))
+  }
+}
+
+case class Group(@Key("_id") id: String = new ObjectId().toString,
+                  name: String,
+                  journalist: String = "")
 
 case class Callout(
                     @Key("_id") id: String = new ObjectId().toString,

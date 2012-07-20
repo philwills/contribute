@@ -1,0 +1,53 @@
+@(groups: Iterator[Group], newGroup: Form[Group])(implicit user: Option[Identity])
+
+
+@main("Groups") {
+    <style>
+        span.editor:before {
+            content: "("
+        }
+        span.editor:after {
+            content: ")"
+        }
+        li.no-action {
+            opacity: 0.3;
+        }
+        input[type="text"] {
+            width: 50%;
+        }
+        textarea {
+            width: 100%;
+            height: 6em;
+        }
+
+        h1 {
+            margin-bottom: 1em;
+        }
+
+        ul.callouts li {
+            border-bottom: 1px black dashed;
+        }
+
+        form {
+            padding-top: 1em;
+        }
+
+    </style>
+
+    <h1>Your callouts</h1>
+
+    <ul class="callouts">
+    @groups.map { group =>
+        <li>
+            <h4>@group.name</h4>
+        </li>
+    }
+    </ul>
+
+    @helper.form(action = routes.Application.group) {
+        <h3>New Group</h3>
+        @helper.inputText(newGroup("name"))
+        <input type="submit">
+    }
+
+}

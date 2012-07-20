@@ -55,6 +55,27 @@ object Application extends Controller {
     Redirect(routes.Application.responses)
   }
 
+  val groupForm = Form(
+    mapping(
+      "name" -> text
+    )((name) => Group(name = name))
+      ((group: Group) => Some((group.name))))
+
+  def group = AuthAction { implicit r =>
+    implicit val id = r.identity
+    val partialGroup = groupForm.bindFromRequest.get
+    Groups.save(partialGroup.copy(journalist = id.get.openid))
+    Redirect(routes.Application.groups)
+  }
+
+  def groups = AuthAction {implicit r =>
+    implicit val id = r.identity
+    Ok(views.html.groups (
+      Groups.forJournalist(id.get),
+      groupForm
+    ))
+  }
+
   def users = AuthAction { implicit r =>
     implicit val id = r.identity
     Async {
