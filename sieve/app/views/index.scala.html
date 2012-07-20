@@ -1,4 +1,4 @@
-@(submissions: Seq[Submission])(implicit user: Option[Identity])
+@(responses: Iterator[CalloutResponse])(implicit user: Option[Identity])
 
 @main("title") {
     <style>
@@ -14,7 +14,7 @@
 
     </style>
     
-    <ul data-bind="foreach: submissions">
+    <ul data-bind="foreach: responses">
         <!--li data-bind="attr: { class: status }"-->
         <li data-bind="css: { 'no-action': noAction }" class="fluid-row">
             <span data-bind="text: text" class="col-6"></span>
@@ -37,11 +37,12 @@
         var activeUser = {
             openid: "@u.openid",
             firstName: "@u.firstName",
-            lastName: "@u.lastName"
+            lastName: "@u.lastName",
+            email: "@u.email"
         }
     }
 
-        function Submission(data) {
+        function Response(data) {
             var self = this;
 
             function Editor(stuff) {
@@ -53,6 +54,7 @@
                 self.fullName = ko.dependentObservable(function (){
                    return self.firstName() + " " + self.lastName()
                 });
+                self.email = stuff.email
             }
 
             function Status(status) {
@@ -73,6 +75,8 @@
             self.followUp = ko.computed(function() {
                 return this.status.value() === "following-up";
             }, self);
+            self.user = data.user
+            self.callout = data.callout
 
             self.status.value.subscribe(function(newStatus) {
                 if (self.status.value() === "new") {
@@ -82,24 +86,24 @@
                 }
                 $.ajax({
                     type: "POST",
-                    url: "/submission",
+                    url: "/api/response",
                     data: ko.toJSON( self ),
                     contentType: "application/json"
                 })
             });
         }
 
-        function SubmissionsViewModel() {
+        function ResponsesViewModel() {
             var self = this;
 
-            self.submissions = ko.observableArray([]);
+            self.responses = ko.observableArray([]);
 
-            $.getJSON("/submissions", function(allData) {
-                var serverSubmissions = $.map(allData, function(item) { return new Submission(item) });
-                self.submissions(serverSubmissions);
+            $.getJSON("/api/responses", function(allData) {
+                var serverResponses = $.map(allData, function(item) { return new Response(item) });
+                self.responses(serverResponses);
             });
         }
 
-        ko.applyBindings(new SubmissionsViewModel());
+        ko.applyBindings(new ResponsesViewModel());
     </script>
 }

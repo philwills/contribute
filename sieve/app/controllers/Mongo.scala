@@ -44,9 +44,13 @@ object Callouts extends SalatDAO[Callout, String] (
     find(MongoDBObject("journalist" -> journo.openid))
   }
 }
-object Responses extends SalatDAO[Response, String] (
+object Responses extends SalatDAO[CalloutResponse, String] (
   collection = Mongo.responses
-)
+) {
+  def toCallout(callout: Callout) = {
+    find(MongoDBObject("callout" -> callout.id))
+  }
+}
 
 case class Callout(
                     @Key("_id") id: String = new ObjectId().toString,
@@ -67,8 +71,9 @@ object Callout{
   )
 }
 
-case class Response(
+case class CalloutResponse(
                      @Key("_id") id: String = new ObjectId().toString,
                      user: String,
                      callout: String,
-                     text: String)
+                     text: String,
+                     status: SubmissionStatus = New())

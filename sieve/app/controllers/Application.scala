@@ -21,7 +21,12 @@ object Application extends Controller {
 
   def responses = AuthAction { r =>
     implicit val id = r.identity
-    Ok(views.html.index(Scaffolding.submissions))
+    Ok(views.html.index {
+      for {
+        callout <- Callouts.forJournalist(id.get)
+        responses <- Responses.toCallout(callout)
+      } yield responses
+    })
   }
 
   val calloutForm = Form(
@@ -47,8 +52,7 @@ object Application extends Controller {
   }
   
   def index = AuthAction { r =>
-    implicit val id = r.identity
-    Ok(views.html.index(Scaffolding.submissions))
+    Redirect(routes.Application.responses)
   }
 
   def users = AuthAction { implicit r =>
